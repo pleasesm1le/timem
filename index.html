@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Обратный отсчёт с музыкой</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Rubik', sans-serif;
+      background: linear-gradient(135deg, #000000, #1a1a1a);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      color: #ff66b2;
+      margin-bottom: 30px;
+      animation: fadeIn 2s ease-in-out;
+    }
+    #countdown {
+      font-size: 3rem;
+      color: #fff;
+      background-color: #1a1a1a;
+      border: 3px solid #ff66b2;
+      padding: 30px 50px;
+      border-radius: 20px;
+      animation: pulse 2s infinite;
+      margin-bottom: 40px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 15px #ff66b2; }
+      50% { box-shadow: 0 0 30px #ff66b2; }
+    }
+    #musicControls {
+      margin-top: 10px;
+    }
+    button {
+      background: #ff66b2;
+      border: none;
+      color: white;
+      padding: 12px 18px;
+      margin: 0 8px;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #ff4c99;
+    }
+    audio {
+      margin-top: 20px;
+      width: 90%;
+      max-width: 420px;
+      outline: none;
+      border-radius: 12px;
+      background: #1a1a1a;
+      border: 2px solid #ff66b2;
+      padding: 8px;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      #countdown { font-size: 2rem; padding: 20px 30px; }
+      button { padding: 10px 14px; font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1>До 16 июня 2025 года осталось:</h1>
+  <div id="countdown">Загрузка...</div>
+
+  <div id="musicControls">
+    <button onclick="playTrack(0)">Трек 1</button>
+    <button onclick="playTrack(1)">Трек 2</button>
+    <button onclick="playTrack(2)">Трек 3</button>
+  </div>
+
+  <audio id="audioPlayer" controls autoplay loop>
+    <source src="" type="audio/mpeg" />
+    Ваш браузер не поддерживает аудио.
+  </audio>
+
+  <script>
+    const countdown = document.getElementById("countdown");
+    const targetDate = new Date("June 16, 2025 00:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        countdown.innerHTML = "Событие наступило!";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdown.innerHTML = `${days}д ${hours}ч ${minutes}м ${seconds}с`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    const tracks = [
+      "track1.mp3",
+      "track2.mp3",
+      "track2.mp3"
+    ];
+
+    const audioPlayer = document.getElementById("audioPlayer");
+
+    function playTrack(index) {
+      audioPlayer.src = tracks[index];
+      audioPlayer.play();
+    }
+
+    window.onload = () => {
+      playTrack(0);
+    };
+  </script>
+</body>
+</html>
